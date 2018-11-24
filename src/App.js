@@ -7,20 +7,50 @@ import Button from './button/Button';
 class App extends Component {
 
   state = {disp: ''};
+
+  componentDidMount() {
+      document.addEventListener('keyup',this.handleClick,false);
+  }
   
+    componentWillUnmount() {
+      document.removeEventListener('keyup', this.handleClick);
+  }
+
   displayUpdate = (valorBotao) => {
     
     if ((valorBotao==='C')||(valorBotao==='CE')){
       this.setState({
         disp: ``
       });
+      return;
     }
-    else{
+    else if (valorBotao==='='){
+      try {
+        eval(this.state.disp);
+      }
+      catch(err) {
+        this.setState({
+          disp: err.message
+        });
+        return;
+      }
+      
       this.setState({
-        disp: `${this.state.disp}${valorBotao}`
+        disp: eval(this.state.disp)
       });
+      return
     }
 
+    this.setState({
+      disp: `${this.state.disp}${valorBotao}`
+    });
+    return
+
+  }
+
+  handleClick = (event) => {
+    event.preventDefault();
+    this.displayUpdate(event.key)
   }
 
   display(){
@@ -54,7 +84,7 @@ class App extends Component {
           <Button valor={1} update={this.displayUpdate}/>
           <Button valor={2} update={this.displayUpdate}/>
           <Button valor={3} update={this.displayUpdate}/>
-          <Button valor={'x'} update={this.displayUpdate}/>
+          <Button valor={'*'} update={this.displayUpdate}/>
         </div>
         <div className='row'>
           <Button valor={'C'} update={this.displayUpdate}/>
