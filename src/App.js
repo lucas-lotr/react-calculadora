@@ -8,6 +8,18 @@ class App extends Component {
 
   state = {disp: ''};
 
+  handleClick = (event) => {
+    let master = '1234567890-+=/*';
+    event.preventDefault();
+    if (master.indexOf(event.key)>=0){
+      this.displayUpdate(event.key);
+    }
+    if (event.key==='Enter'){
+      this.displayUpdate('=');
+    }
+  
+  }
+
   componentDidMount() {
       document.addEventListener('keyup',this.handleClick,false);
   }
@@ -48,10 +60,7 @@ class App extends Component {
 
   }
 
-  handleClick = (event) => {
-    event.preventDefault();
-    this.displayUpdate(event.key)
-  }
+  
 
   display(){
     if (this.state.disp===''){
